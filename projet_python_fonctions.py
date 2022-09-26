@@ -52,23 +52,38 @@ def immeuble(immeubles):
                 forward(100)
             end_fill()
             if etages != 0:
-                fenetres(randint(1,5), im_width)
+                fenetres(randint(3,10), im_width)
 
 def fenetres(f_number, im_width):
     penup()
-    sety(ycor()+25)
+    sety(ycor()+30)
+    setx(int(xcor()+(im_width*1/5)/f_number))
     for f in range(f_number):
-        f_type = randint(1,1)
-        if f_type == 1:
-            color((0,0,0))
-            setx(int(xcor()+(im_width*1/4)/f_number))
+        color((0,0,0))
+        pendown()
+        begin_fill()
+        setx(int(xcor()+(im_width*2.5/5)/f_number))
+        sety(ycor()+ 40)
+        setx(int(xcor()-(im_width*2.5/5)/f_number))
+        sety(ycor()-40)
+        setx(int(xcor()+(im_width*2.5/5)/f_number))
+        fillcolor((153,255,255))
+        end_fill()
+        penup()
+        f_type = randint(2,2)
+        if f_type == 2:
+            setx(xcor() - 1)
+            setx(int(xcor()-((im_width*2.5/5)/f_number/2)))
+            #setx(int(xcor()+(im_width*2.5/5)/f_number))
             pendown()
-            setx(int(xcor()+(im_width*2/4)/f_number))
-            sety(ycor()+ (im_width*2/4)/f_number)
-            setx(int(xcor()-(im_width*2/4)/f_number))
-            sety(ycor()- (im_width*2/4)/f_number)
-            setx(int(xcor()+(im_width*2/4)/f_number))
+            sety(ycor()+ 40)
+            sety(ycor()- 20)
+            setx(int(xcor()-((im_width*2.5/5)/f_number/2)))
+            setx(int(xcor()+(im_width*2.5/5)/f_number))
             penup()
+            sety(ycor()- 20)
+        setx(int(xcor()+(im_width*1.5/5)/f_number))
+                
             
                 
 
@@ -126,6 +141,7 @@ def herbe(y):
     
 
 def ville():
+    speed(10)
     sol(sol_y)
     herbe(sol_y)
     immeuble(2)
