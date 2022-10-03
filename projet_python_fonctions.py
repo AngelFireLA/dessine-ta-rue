@@ -42,7 +42,6 @@ def immeuble(immeubles):
         angle = 0
         for etages in range(im_etages):
             pendown()
-            print(etages)
             begin_fill()
             color((int(r*(3/4)), int(g*(3/4)), int(b*(3/4))))
             fillcolor((r, g, b))
@@ -55,7 +54,7 @@ def immeuble(immeubles):
                 porte(im_width)
             end_fill()
             if etages != 0:
-                fenetres(randint(2,5), im_width)
+                fenetres(3, im_width)
             setheading(90)
             forward(100)
         toit(im_width)
@@ -64,8 +63,9 @@ def fenetres(f_number, im_width):
     penup()
     im_starting_x = xcor()
     sety(ycor()+30)
-    setx(int(xcor()+(im_width*1/5)/f_number))
-    window_size = int((im_width*2.5/5)/f_number)
+    #im_width = im_width_full-im_width_full*1/10
+    setx(int(xcor()+ (im_width*1/7)-(im_width*1/10)))
+    window_size = int((im_width*1/7)+(im_width*1/10))
     for f in range(f_number):
         color((0,0,0))
         pendown()
@@ -91,15 +91,14 @@ def fenetres(f_number, im_width):
             sety(ycor()- 20)
         if f_type == 3:
             pendown()
-            setx(xcor() - 1)
-            setx(int(xcor()-((im_width*2.5/5)/f_number)))
-            for loop in range(2):
-                setx(int(xcor() + window_size/5))
-                sety(ycor()+ 40)
-                setx(int(xcor() + window_size/5))
-                sety(ycor()- 40)
+            setx(int(xcor()-window_size))
+            setx(int(xcor() + window_size/3))
+            sety(ycor()+ 40)
+            setx(int(xcor() + window_size/3))
+            sety(ycor()- 40)
+            setx(int(xcor() + window_size/3))
             penup()
-        setx(int(xcor()+(im_width*1.5/5)/f_number))
+        setx(int(xcor()+(im_width*1/7)-(im_width*1/20)))
     setx(im_starting_x)
     sety(ycor()-30)
 
@@ -115,10 +114,7 @@ def toit(im_width):
         sety(ycor() + 15)
         setx(xcor() + im_width + int(2*(im_width/20)))
         sety(ycor() - 15)
-
-
-                
-            
+        setx(xcor() - im_width + int(2*(im_width/20)))
                 
 
 def porte(im_width):
@@ -175,7 +171,7 @@ def herbe(y):
     
 
 def ville():
-    speed(100)
+    speed(10)
     sol(sol_y)
     herbe(sol_y)
     immeuble(2)
