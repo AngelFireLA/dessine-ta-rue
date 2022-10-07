@@ -36,13 +36,16 @@ def sol(y):
 
 
 def immeuble(immeubles):
-    for immeuble in range(1, immeubles):
-        im_width = randint(120, 200)
-        im_etages = randint(1, 6)
+    penup()
+    setx(int(window_width()/2*-1))
+    for immeuble in range(0, immeubles):
+        print(immeuble)
+        im_width = randint(50, int(window_width()/(immeubles+immeubles-1)))
+        im_etages = randint(2, 5)
         penup()
         couleur_aleatoire()
         color((int(r*(3/4)), int(g*(3/4)), int(b*(3/4))))
-        setx(int((window_width()/2*-1)+window_width()/20))
+        starting_x = xcor()
         for etages in range(im_etages):
             pendown()
             begin_fill()
@@ -61,6 +64,10 @@ def immeuble(immeubles):
             setheading(90)
             forward(100)
         toit(im_width)
+        setx(starting_x+im_width)
+        sety(sol_y)
+        setheading(0)
+        forward(int(window_width()/(immeubles+immeubles-1)))
 
 
 def fenetres(f_number, im_width):
@@ -68,8 +75,8 @@ def fenetres(f_number, im_width):
     im_starting_x = xcor()
     sety(ycor()+30)
     #im_width = im_width_full-im_width_full*1/10
-    setx(int(xcor() + (im_width*1/7)-(im_width*1/10)))
-    window_size = int((im_width*1/7)+(im_width*1/10))
+    setx(int(xcor() + im_width/16))
+    window_size = int(im_width/4)
     for f in range(f_number):
         color((0, 0, 0))
         pendown()
@@ -102,7 +109,7 @@ def fenetres(f_number, im_width):
             sety(ycor() - 40)
             setx(int(xcor() + window_size/3 - 1))
             penup()
-        setx(int(xcor()+(im_width*1/7)-(im_width*1/20)))
+        setx(int(xcor()+im_width*1/16))
     setx(im_starting_x)
     sety(ycor()-30)
 
@@ -114,26 +121,26 @@ def toit(im_width):
     im_starting_x = xcor()
     pendown()
     setx(int(xcor()-im_width/20))
-    antennes = randint(1, 3)
+    antennes = randint(0, 3)
     if t_type == 1:
-        #begin_fill()
+        begin_fill()
         sety(ycor() + 15)
         setx(xcor() + im_width + int(2*(im_width/20)))
         sety(ycor() - 15)
         setx(xcor() - im_width + int(2*(-im_width/20)))
-        #end_fill()
+        end_fill()
         penup()
         sety(ycor() + 15)
         longueur_toit = im_width + int(2*(im_width/20))
-        speed(1)
         for loop in range(antennes):
-            avance_random = randint(0, longueur_toit)
+            avance_random = randint(0, longueur_toit-10)
             setx(xcor() + avance_random)
             pendown()
             longueur_antennes = randint(20, 50)
             sety(ycor() + longueur_antennes)
             sety(ycor() - longueur_antennes)
             setx(xcor() - avance_random)
+        penup()
 
 
 
@@ -163,9 +170,9 @@ def porte(im_width):
     else:
         fillcolor((r, g, b))
     forward(int(im_width/3))
-    sety(ycor()+(int((im_width/3)*1.5)))
+    sety(ycor()+(int(100/1.4)))
     setx(xcor()-int(im_width/3))
-    sety(ycor()-(int((im_width/3)*1.5)))
+    sety(ycor()-(int(100/1.4)))
     end_fill()
     penup()
     sety(ycor()-1)
@@ -194,11 +201,13 @@ def ville():
     sol(sol_y)
     herbe()
 
-    immeuble(2)
+    immeuble(10)
 
 
 ville()
 
+#commenter "done()" et décommenter le reste en bas si le module keyboard est installé
+done()
 #while True:
     #if keyboard.is_pressed("Space"):
         #clear()
