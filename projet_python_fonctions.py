@@ -1,7 +1,9 @@
 from turtle import *
 from random import *
 from tkinter import *
-import keyboard
+
+#Nécessite le module "keyboard"
+#import keyboard
 
 immeuble_x = 0
 immeuble_y = 0
@@ -114,16 +116,24 @@ def toit(im_width):
     setx(int(xcor()-im_width/20))
     antennes = randint(1, 3)
     if t_type == 1:
-        begin_fill()
-        speed(1)
+        #begin_fill()
         sety(ycor() + 15)
         setx(xcor() + im_width + int(2*(im_width/20)))
         sety(ycor() - 15)
         setx(xcor() - im_width + int(2*(-im_width/20)))
-        end_fill()
+        #end_fill()
         penup()
         sety(ycor() + 15)
-        # longueur du toit --> im_width + int(2*(im_width/20))
+        longueur_toit = im_width + int(2*(im_width/20))
+        speed(1)
+        for loop in range(antennes):
+            avance_random = randint(0, longueur_toit)
+            setx(xcor() + avance_random)
+            pendown()
+            longueur_antennes = randint(20, 50)
+            sety(ycor() + longueur_antennes)
+            sety(ycor() - longueur_antennes)
+            setx(xcor() - avance_random)
 
 
 
@@ -189,7 +199,7 @@ def ville():
 
 ville()
 
-while True:
-    if keyboard.is_pressed("Space"):
-        clear()
-        ville()
+#while True:
+    #if keyboard.is_pressed("Space"):
+        #clear()
+        #ville()
