@@ -1,17 +1,18 @@
 from turtle import *
 from random import *
 from tkinter import *
+from math import  *
 
-#Nécessite le module "keyboard"
-#import keyboard
 
+nombre_immeubles = 8
 immeuble_x = 0
 immeuble_y = 0
 sol_y = int(window_height()/4*-1)
+taille_etage = int(((window_height())*3/4)/6)
+
 r = 0
 g = 0
 b = 0
-
 
 root = Tk()
 
@@ -36,11 +37,13 @@ def sol(y):
 
 
 def immeuble(immeubles):
+    im_distance_in_screen = window_width() / ((immeubles * 3) + (immeubles + 1))
     penup()
     setx(int(window_width()/2*-1))
+    setheading(0)
+    forward(im_distance_in_screen)
     for immeuble in range(0, immeubles):
-        print(immeuble)
-        im_width = randint(50, int(window_width()/(immeubles+immeubles-1)))
+        im_width = randint(int(im_distance_in_screen*2), int(im_distance_in_screen*3))
         im_etages = randint(2, 5)
         penup()
         couleur_aleatoire()
@@ -52,9 +55,9 @@ def immeuble(immeubles):
             color((int(r*(3/4)), int(g*(3/4)), int(b*(3/4))))
             fillcolor((r, g, b))
             setx(xcor()+im_width)
-            sety(ycor() + 100)
+            sety(ycor() + taille_etage)
             setx(xcor()-im_width)
-            sety(ycor() - 100)
+            sety(ycor() - taille_etage)
             if etages == 0:
                 end_fill()
                 porte(im_width)
@@ -62,19 +65,18 @@ def immeuble(immeubles):
             if etages != 0:
                 fenetres(3, im_width)
             setheading(90)
-            forward(100)
+            forward(taille_etage)
         toit(im_width)
         setx(starting_x+im_width)
         sety(sol_y)
         setheading(0)
-        forward(int(window_width()/(immeubles+immeubles-1)))
+        forward(im_distance_in_screen)
 
 
 def fenetres(f_number, im_width):
     penup()
     im_starting_x = xcor()
     sety(ycor()+30)
-    #im_width = im_width_full-im_width_full*1/10
     setx(int(xcor() + im_width/16))
     window_size = int(im_width/4)
     for f in range(f_number):
@@ -82,9 +84,9 @@ def fenetres(f_number, im_width):
         pendown()
         begin_fill()
         setx(int(xcor()+window_size))
-        sety(ycor() + 40)
+        sety(ycor() + taille_etage/2.5)
         setx(int(xcor()-window_size))
-        sety(ycor()-40)
+        sety(ycor()-taille_etage/2.5)
         setx(int(xcor()+window_size))
         fillcolor((153, 255, 255))
         end_fill()
@@ -92,22 +94,22 @@ def fenetres(f_number, im_width):
         f_type = randint(1, 3)
         if f_type == 2:
             setx(xcor() - 1)
-            setx(int(xcor()-(window_size/2)))
+            setx(ceil(xcor()-(window_size/2)))
             pendown()
-            sety(ycor() + 40)
+            sety(ycor() + taille_etage/2.5)
             sety(ycor() - 20)
-            setx(int(xcor()-(window_size/2)))
-            setx(int(xcor()+(window_size-1)))
+            setx(ceil(xcor()-(window_size/2)))
+            setx(ceil(xcor()+(window_size-1)))
             penup()
             sety(ycor() - 20)
         if f_type == 3:
             pendown()
             setx(int(xcor()-window_size))
             setx(int(xcor() + window_size/3))
-            sety(ycor() + 40)
+            sety(ycor() + taille_etage/2.5)
             setx(int(xcor() + window_size/3))
-            sety(ycor() - 40)
-            setx(int(xcor() + window_size/3 - 1))
+            sety(ycor() - taille_etage/2.5)
+            setx(int(xcor() + window_size/3)-1)
             penup()
         setx(int(xcor()+im_width*1/16))
     setx(im_starting_x)
@@ -133,7 +135,7 @@ def toit(im_width):
         sety(ycor() + 15)
         longueur_toit = im_width + int(2*(im_width/20))
         for loop in range(antennes):
-            avance_random = randint(0, longueur_toit-10)
+            avance_random = randint(0, int(longueur_toit-10))
             setx(xcor() + avance_random)
             pendown()
             longueur_antennes = randint(20, 50)
@@ -141,8 +143,6 @@ def toit(im_width):
             sety(ycor() - longueur_antennes)
             setx(xcor() - avance_random)
         penup()
-
-
 
 
 def porte(im_width):
@@ -153,26 +153,26 @@ def porte(im_width):
     color((0, 0, 0))
     pendown()
     begin_fill()
-    if r*(5/4) <= 255 and g*(5/4) <= 255 and b*(5/4) <= 255:
-        fillcolor((int(r*(5/4)), int(g*(5/4)), int(b*(5/4))))
-    elif r*(5/4) <= 255 and g*(5/4) <= 255 and b*(5/4) > 255:
-        fillcolor((int(r*(5/4)), int(g*(5/4)), b))
-    elif r*(5 / 4) <= 255 and g * (5 / 4) > 255 >= b * (5 / 4):
-        fillcolor((int(r*(5/4)), g, int(b*(5/4))))
-    elif r * (5 / 4) > 255 >= b * (5 / 4) and g*(5 / 4) <= 255:
-        fillcolor((r, int(g*(5/4)), int(b*(5/4))))
-    elif r*(5/4) <= 255 < g*(5 / 4) and b*(5 / 4) > 255:
-        fillcolor((int(r*(5/4)), g, b))
-    elif r * (5 / 4) > 255 >= b * (5 / 4) and g*(5 / 4) > 255:
-        fillcolor((r, g, int(b*(5/4))))
-    elif r*(5/4) > 255 and g*(5/4) <= 255 and b*(5/4) > 255:
-        fillcolor((r, int(g*(5/4)), b))
+    r_door = r
+    g_door = g
+    b_door = b
+    if r*(5/4) <= 255 :
+        r_door = int(r*(5/4))
     else:
-        fillcolor((r, g, b))
+        r_door = int(r*(3/4))
+    if g * (5 / 4) <= 255:
+        g_door = int(g * (5 / 4))
+    else:
+        g_door = int(g*(3/4))
+    if b * (5 / 4) <= 255:
+        b_door = int(b * (5 / 4))
+    else:
+        b_door = int(b*(3/4))
+    fillcolor((r_door, g_door, b_door))
     forward(int(im_width/3))
-    sety(ycor()+(int(100/1.4)))
+    sety(ycor()+(int(taille_etage/1.4)))
     setx(xcor()-int(im_width/3))
-    sety(ycor()-(int(100/1.4)))
+    sety(ycor()-(int(taille_etage/1.4)))
     end_fill()
     penup()
     sety(ycor()-1)
@@ -201,14 +201,8 @@ def ville():
     sol(sol_y)
     herbe()
 
-    immeuble(10)
+    immeuble(nombre_immeubles)
 
 
 ville()
-
-#commenter "done()" et décommenter le reste en bas si le module keyboard est installé
 done()
-#while True:
-    #if keyboard.is_pressed("Space"):
-        #clear()
-        #ville()
