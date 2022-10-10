@@ -194,13 +194,35 @@ def herbe():
     sety(sol_y)
     setx(int(window_width()*-1))
     end_fill()
+    print("starting road")
+    sol_size = window_height()/2+sol_y
+    begin_fill()
+    fillcolor((33, 47, 60))
+    color((33, 47, 60))
+    setheading(-90)
+    forward(sol_size/4)
+    setx(int(window_width()))
+    setheading(-90)
+    forward(sol_size/2)
+    setx(int(window_width()*-1))
+    end_fill()
+    color((255, 255, 255))
+    setheading(90)
+    forward(sol_size/4)
+    setheading(0)
+    pensize(10)
+    setx(int(window_width()))
+    setx(int(window_width()*-1))
+    pensize(3)
+        
+        
+
 
     
 def ville():
-    speed(1000)
+    speed(100)
     sol(sol_y)
     herbe()
-
     immeuble(nombre_immeubles)
 
 
