@@ -4,11 +4,13 @@ from tkinter import *
 from math import  *
 
 
-nombre_immeubles = 8
+nombre_immeubles = 10
 immeuble_x = 0
 immeuble_y = 0
 sol_y = int(window_height()/4*-1)
-taille_etage = int(((window_height())*3/4)/6)
+taille_etage = int(((window_height())*3/4+230)/6)
+sol_size = window_height()/2+sol_y
+
 
 r = 0
 g = 0
@@ -68,15 +70,15 @@ def immeuble(immeubles):
             forward(taille_etage)
         toit(im_width)
         setx(starting_x+im_width)
-        sety(sol_y)
         setheading(0)
         forward(im_distance_in_screen)
+        sety(sol_y-30)
 
 
 def fenetres(f_number, im_width):
     penup()
     im_starting_x = xcor()
-    sety(ycor()+30)
+    sety(ycor()+floor(taille_etage/3))
     setx(int(xcor() + im_width/16))
     window_size = int(im_width/4)
     for f in range(f_number):
@@ -97,11 +99,11 @@ def fenetres(f_number, im_width):
             setx(ceil(xcor()-(window_size/2)))
             pendown()
             sety(ycor() + taille_etage/2.5)
-            sety(ycor() - 20)
+            sety(ycor() - taille_etage/5)
             setx(ceil(xcor()-(window_size/2)))
             setx(ceil(xcor()+(window_size-1)))
             penup()
-            sety(ycor() - 20)
+            sety(ycor() - taille_etage/5)
         if f_type == 3:
             pendown()
             setx(int(xcor()-window_size))
@@ -113,7 +115,7 @@ def fenetres(f_number, im_width):
             penup()
         setx(int(xcor()+im_width*1/16))
     setx(im_starting_x)
-    sety(ycor()-30)
+    sety(ycor() - floor(taille_etage/3))
 
 
 def toit(im_width):
@@ -194,8 +196,6 @@ def herbe():
     sety(sol_y)
     setx(int(window_width()*-1))
     end_fill()
-    print("starting road")
-    sol_size = window_height()/2+sol_y
     begin_fill()
     fillcolor((33, 47, 60))
     color((33, 47, 60))
@@ -214,16 +214,26 @@ def herbe():
     setx(int(window_width()))
     setx(int(window_width()*-1))
     pensize(3)
+    penup()
+    setx(int(window_width()/2*-1))
+    sety(sol_y-30)
         
         
 
 
     
 def ville():
-    speed(100)
+    global sol_y
+    speed(99999)
     sol(sol_y)
     herbe()
-    immeuble(nombre_immeubles)
+    immeuble(int(nombre_immeubles/2))
+    sol_y = sol_y-sol_size
+    sety(sol_y-40)
+    setx(xcor() + 50)
+    immeuble(int(nombre_immeubles/2))
+
+
 
 
 ville()
