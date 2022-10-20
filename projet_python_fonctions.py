@@ -19,13 +19,12 @@ root = Tk()
 screen = Screen()
 screen.setup(width=root.winfo_screenwidth(), height=root.winfo_screenheight())
 screen.tracer(0)
-car.speed(0)
 root.destroy()
 
 car = Turtle()
+#car.hideturtle()
 car.forward(50)
-
-print(getshapes())
+car.speed(0)
 
 
 def couleur_aleatoire():
@@ -126,30 +125,27 @@ def fenetres(f_number, im_width):
 def toit(im_width):
     color((0, 0, 0))
     fillcolor((0, 0, 0))
-    t_type = randint(1, 1)
-    im_starting_x = xcor()
     pendown()
     setx(int(xcor() - im_width / 20))
     antennes = randint(0, 3)
-    if t_type == 1:
-        begin_fill()
-        sety(ycor() + 15)
-        setx(xcor() + im_width + int(2 * (im_width / 20)))
-        sety(ycor() - 15)
-        setx(xcor() - im_width + int(2 * (-im_width / 20)))
-        end_fill()
-        penup()
-        sety(ycor() + 15)
-        longueur_toit = im_width + int(2 * (im_width / 20))
-        for loop in range(antennes):
-            avance_random = randint(0, int(longueur_toit - 10))
-            setx(xcor() + avance_random)
-            pendown()
-            longueur_antennes = randint(20, 50)
-            sety(ycor() + longueur_antennes)
-            sety(ycor() - longueur_antennes)
-            setx(xcor() - avance_random)
-        penup()
+    begin_fill()
+    sety(ycor() + 15)
+    setx(xcor() + im_width + int(2 * (im_width / 20)))
+    sety(ycor() - 15)
+    setx(xcor() - im_width + int(2 * (-im_width / 20)))
+    end_fill()
+    penup()
+    sety(ycor() + 15)
+    longueur_toit = im_width + int(2 * (im_width / 20))
+    for loop in range(antennes):
+        avance_random = randint(0, int(longueur_toit - 10))
+        setx(xcor() + avance_random)
+        pendown()
+        longueur_antennes = randint(20, 50)
+        sety(ycor() + longueur_antennes)
+        sety(ycor() - longueur_antennes)
+        setx(xcor() - avance_random)
+    penup()
 
 
 def porte(im_width):
@@ -213,7 +209,7 @@ def herbe():
     end_fill()
     color((255, 255, 255))
     setheading(90)
-    forward(sol_size / 4)
+    forward(sol_size / 3.4)
     setheading(0)
     pensize(10)
     setx(int(window_width()))
@@ -252,8 +248,9 @@ def ciel():
     dessineRayons(50, 40)
     left(45)
 
+
 def dessineRayons(longueur, rayon):
-     for i in range(4):
+    for i in range(4):
         penup()
         forward(rayon)
         pendown()
@@ -262,37 +259,67 @@ def dessineRayons(longueur, rayon):
         backward(longueur + rayon)
         left(90)
 
+
 def voiture(car, taille):
     car.pendown()
-    car.fillcolor('black') 
+    car.fillcolor('orange')
     car.begin_fill()
-    car.dot(50)
+    for i in range(2):
+        car.forward(75*taille)
+        car.left(90)
+        car.forward(50*taille)
+        car.left(90)
     car.end_fill()
+    car.fillcolor('black')
+    car.penup()
+    car.begin_fill()
+    car.setx(car.xcor() + 10*taille)
+    for i in range(2):
+        car.sety(car.ycor() - 20*taille)
+        car.circle(10*taille)
+        car.sety(car.ycor() + 20*taille)
+        if i == 0:
+            car.setx(car.xcor() + 55*taille)
+    car.setx(car.xcor() - 65*taille)
+    car.end_fill()
+    car.forward(75*taille)
+    car.pendown()
+    car.fillcolor('orange')
+    car.begin_fill()
+    for i in range(2):
+        car.forward(25*taille)
+        car.left(90)
+        car.forward(35*taille)
+        car.left(90)
+    car.end_fill()
+    car.forward(-1*(75*taille))
 
-def infini():
+
+def voiture_infini():
+    car.sety(sol_y)
+    car.forward(sol_size / 4)
+    car.setheading(-90)
+    car.forward(sol_size / 5)
+    car.setheading(0)
     while True:
-        car.clear()  
-        
-        voiture(car, 1)   
-        
-        screen.update()    
-        
-        car.forward(0.5) 
+        car.clear()
+        voiture(car, 1.7)
+        screen.update()
+        car.forward(0.5)
+        if car.xcor() >= window_width()/2:
+            car.setx((window_width() / 2)*-1)
+
 
 
 def ville():
     global sol_y
-    speed(99999)
     sol(sol_y)
     herbe()
     ciel()
     sety(sol_y-30)
-    #immeuble(int(nombre_immeubles))
-    # sol_y = sol_y-sol_size
-    # sety(sol_y-40)
-    # setx(xcor() + 50)
-    # immeuble(int(nombre_immeubles/2))
-    infini()
+    immeuble(int(nombre_immeubles))
+    voiture_infini()
+
 
 ville()
 done()
