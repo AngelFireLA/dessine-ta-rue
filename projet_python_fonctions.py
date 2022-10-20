@@ -7,7 +7,7 @@ nombre_immeubles = 7
 immeuble_x = 0
 immeuble_y = 0
 sol_y = int(window_height() / 4 * -1)
-taille_etage = int((window_height() * 3 / 4 + 230) / 6)
+taille_etage = int((window_height() * 3 / 4 + 230) / 8)
 sol_size = window_height() / 2 + sol_y
 
 r = 0
@@ -17,9 +17,15 @@ b = 0
 root = Tk()
 
 screen = Screen()
-screen.setup(width=root.winfo_screenwidth(),
-             height=root.winfo_screenheight())
+screen.setup(width=root.winfo_screenwidth(), height=root.winfo_screenheight())
+screen.tracer(0)
+car.speed(0)
 root.destroy()
+
+car = Turtle()
+car.forward(50)
+
+print(getshapes())
 
 
 def couleur_aleatoire():
@@ -45,7 +51,7 @@ def immeuble(immeubles):
     forward(im_distance_in_screen)
     for immeuble in range(0, immeubles):
         im_width = int(im_distance_in_screen * 3)
-        im_etages = randint(2, 5)
+        im_etages = randint(3, 5)
         penup()
         couleur_aleatoire()
         color((int(r * (3 / 4)), int(g * (3 / 4)), int(b * (3 / 4))))
@@ -220,8 +226,7 @@ def herbe():
 
 def ciel():
     sol(sol_y)
-    print('hi')
-    color("lightblue")
+    color("cyan")
     setx(int(window_width() / 2 * -1))
     sety(sol_y)
     pendown()
@@ -231,8 +236,48 @@ def ciel():
     sety(window_height())
     setx(window_width())
     sety(sol_y)
-    setx(int(window_width() * -1))
+    setx(int(window_width()/2 * -1))
     end_fill()
+    penup()
+    color("black")
+    setx(int((window_width()/2*(7/8)*-1)))
+    sety(int(window_height()/2*(12/16)))
+    pendown()
+    color("yellow")
+    begin_fill()
+    dot(80)
+    end_fill()
+    dessineRayons(50, 40)
+    right(45)
+    dessineRayons(50, 40)
+    left(45)
+
+def dessineRayons(longueur, rayon):
+     for i in range(4):
+        penup()
+        forward(rayon)
+        pendown()
+        forward(longueur)
+        penup()
+        backward(longueur + rayon)
+        left(90)
+
+def voiture(car, taille):
+    car.pendown()
+    car.fillcolor('black') 
+    car.begin_fill()
+    car.dot(50)
+    car.end_fill()
+
+def infini():
+    while True:
+        car.clear()  
+        
+        voiture(car, 1)   
+        
+        screen.update()    
+        
+        car.forward(0.5) 
 
 
 def ville():
@@ -241,12 +286,13 @@ def ville():
     sol(sol_y)
     herbe()
     ciel()
-
-    # immeuble(int(nombre_immeubles))
+    sety(sol_y-30)
+    #immeuble(int(nombre_immeubles))
     # sol_y = sol_y-sol_size
     # sety(sol_y-40)
     # setx(xcor() + 50)
     # immeuble(int(nombre_immeubles/2))
+    infini()
 
 ville()
 done()
