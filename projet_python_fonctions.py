@@ -22,8 +22,7 @@ screen.tracer(0)
 root.destroy()
 
 car = Turtle()
-#car.hideturtle()
-car.forward(50)
+car.hideturtle()
 car.speed(0)
 
 
@@ -267,32 +266,23 @@ def voiture(car, taille):
     for i in range(2):
         car.forward(75*taille)
         car.left(90)
-        car.forward(50*taille)
+        car.forward(20*taille)
         car.left(90)
     car.end_fill()
     car.fillcolor('black')
     car.penup()
     car.begin_fill()
-    car.setx(car.xcor() + 10*taille)
+    car.forward(10*taille)
     for i in range(2):
         car.sety(car.ycor() - 20*taille)
         car.circle(10*taille)
         car.sety(car.ycor() + 20*taille)
         if i == 0:
-            car.setx(car.xcor() + 55*taille)
-    car.setx(car.xcor() - 65*taille)
+            car.forward(55*taille)
+    car.forward(-1*(10*taille))
+    car.forward(-1*(55*taille))
     car.end_fill()
-    car.forward(75*taille)
-    car.pendown()
-    car.fillcolor('orange')
-    car.begin_fill()
-    for i in range(2):
-        car.forward(25*taille)
-        car.left(90)
-        car.forward(35*taille)
-        car.left(90)
-    car.end_fill()
-    car.forward(-1*(75*taille))
+
 
 
 def voiture_infini():
@@ -306,9 +296,8 @@ def voiture_infini():
         voiture(car, 1.7)
         screen.update()
         car.forward(0.5)
-        if car.xcor() >= window_width()/2:
-            car.setx((window_width() / 2)*-1)
-
+        if car.xcor() >= window_width()/2+150:
+            car.setx((window_width() / 2)*-1-150)
 
 
 def ville():
