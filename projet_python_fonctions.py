@@ -24,6 +24,7 @@ root.destroy()
 car = Turtle()
 car.hideturtle()
 car.speed(0)
+hideturtle()
 
 
 def couleur_aleatoire():
@@ -260,14 +261,26 @@ def dessineRayons(longueur, rayon):
 
 
 def voiture(car, taille):
+    car_starting_x = car.xcor()
+    car_starting_y = car.ycor()
     car.pendown()
     car.fillcolor('orange')
     car.begin_fill()
-    for i in range(2):
-        car.forward(75*taille)
-        car.left(90)
-        car.forward(20*taille)
-        car.left(90)
+    car.forward(75*taille)
+    car.left(90)
+    car.forward(20*taille)
+    car.left(90)
+    car.forward(25*taille)
+    car.right(90)
+    car.forward(20*taille)
+    car.left(90)
+    car.forward(30*taille)
+    car.goto(car_starting_x+20, car_starting_y+30)
+    car.towards(car.xcor()-1, car.ycor())
+    car.forward(20)
+    car.left(90)
+    car.forward(30)
+    car.setheading(0)
     car.end_fill()
     car.fillcolor('black')
     car.penup()
@@ -298,6 +311,7 @@ def voiture_infini():
         car.forward(0.5)
         if car.xcor() >= window_width()/2+150:
             car.setx((window_width() / 2)*-1-150)
+        
 
 
 def ville():
