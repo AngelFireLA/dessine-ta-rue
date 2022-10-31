@@ -6,3 +6,4 @@ to do list:
 -avion ?
 - plusieurs voitures de différentes couleurs
 - autre type de toit ?
+- remplacer forwarda avec position relative
