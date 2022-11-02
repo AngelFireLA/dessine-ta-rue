@@ -18,13 +18,19 @@ root = Tk()
 
 screen = Screen()
 screen.setup(width=root.winfo_screenwidth(), height=root.winfo_screenheight())
-screen.tracer(0)
+screen.tracer(False)
 root.destroy()
 
-car = Turtle()
-car.hideturtle()
-car.speed(0)
-hideturtle()
+
+for loop in range(1, 6):
+    exec("car" + str(loop) + " = Turtle()")
+for loop in range(0, 6):
+    if loop == 0:
+        hideturtle()
+        speed(0)
+    else:
+        exec("car" + str(loop) + ".hideturtle()")
+        exec("car" + str(loop) + ".speed(0)")
 
 
 def couleur_aleatoire():
@@ -37,6 +43,10 @@ def couleur_aleatoire():
     b = randint(0, 255)
 
 
+def couleur_aleatoire_voiture() -> tuple:
+    return randint(0, 255), randint(0, 255), randint(0, 255)
+
+
 def sol(y):
     penup()
     sety(y)
@@ -46,8 +56,7 @@ def immeuble(immeubles):
     im_distance_in_screen = window_width() / (immeubles * 3 + immeubles + 1)
     penup()
     setx(int(window_width() / 2 * -1))
-    setheading(0)
-    forward(im_distance_in_screen)
+    setx(xcor() + im_distance_in_screen)
     for immeuble in range(0, immeubles):
         im_width = int(im_distance_in_screen * 3)
         im_etages = randint(3, 5)
@@ -70,12 +79,10 @@ def immeuble(immeubles):
             end_fill()
             if etages != 0:
                 fenetres(3, im_width)
-            setheading(90)
-            forward(taille_etage)
+            sety(ycor() + taille_etage)
         toit(im_width)
         setx(starting_x + im_width)
-        setheading(0)
-        forward(im_distance_in_screen)
+        setx(xcor() + im_distance_in_screen)
         sety(sol_y - 30)
 
 
@@ -149,10 +156,9 @@ def toit(im_width):
 
 
 def porte(im_width):
-    setheading(0)
     penup()
     sety(ycor() + 1)
-    forward(int(im_width / 3))
+    setx(xcor() + int(im_width / 3))
     color((0, 0, 0))
     pendown()
     begin_fill()
@@ -172,14 +178,14 @@ def porte(im_width):
     else:
         b_door = int(b * (3 / 4))
     fillcolor((r_door, g_door, b_door))
-    forward(int(im_width / 3))
+    setx(xcor() + int(im_width / 3))
     sety(ycor() + int(taille_etage / 1.4))
     setx(xcor() - int(im_width / 3))
     sety(ycor() - int(taille_etage / 1.4))
     end_fill()
     penup()
     sety(ycor() - 1)
-    forward(int(im_width / 3 * -1))
+    setx(xcor() - int(im_width / 3))
     pendown()
     color((int(r * (3 / 4)), int(g * (3 / 4)), int(b * (3 / 4))))
 
@@ -200,17 +206,13 @@ def herbe():
     begin_fill()
     fillcolor((33, 47, 60))
     color((33, 47, 60))
-    setheading(-90)
-    forward(sol_size / 4)
+    sety(ycor() - sol_size / 4)
     setx(int(window_width()))
-    setheading(-90)
-    forward(sol_size / 2)
+    sety(ycor() - sol_size / 2)
     setx(int(window_width() * -1))
     end_fill()
     color((255, 255, 255))
-    setheading(90)
-    forward(sol_size / 3.4)
-    setheading(0)
+    sety(ycor() + sol_size / 3.4)
     pensize(10)
     setx(int(window_width()))
     setx(int(window_width() * -1))
@@ -232,12 +234,12 @@ def ciel():
     sety(window_height())
     setx(window_width())
     sety(sol_y)
-    setx(int(window_width()/2 * -1))
+    setx(int(window_width() / 2 * -1))
     end_fill()
     penup()
     color("black")
-    setx(int((window_width()/2*(7/8)*-1)))
-    sety(int(window_height()/2*(12/16)))
+    setx(int((window_width() / 2 * (7 / 8) * -1)))
+    sety(int(window_height() / 2 * (12 / 16)))
     pendown()
     color("yellow")
     begin_fill()
@@ -260,58 +262,90 @@ def dessineRayons(longueur, rayon):
         left(90)
 
 
-def voiture(car, taille):
+def voiture(taille, car_color: tuple, car):
     car_starting_x = car.xcor()
     car_starting_y = car.ycor()
     car.pendown()
-    car.fillcolor('orange')
+
+    #Forme de base de la voiture
+    colormode(255)
+    car.fillcolor(car_color)
     car.begin_fill()
-    car.forward(75*taille)
-    car.left(90)
-    car.forward(20*taille)
-    car.left(90)
-    car.forward(25*taille)
-    car.right(90)
-    car.forward(20*taille)
-    car.left(90)
-    car.forward(30*taille)
-    car.goto(car_starting_x+20, car_starting_y+30)
-    car.towards(car.xcor()-1, car.ycor())
-    car.forward(20)
-    car.left(90)
-    car.forward(30)
-    car.setheading(0)
+    car.setx(car.xcor() + 75 * taille)
+    car.sety(car.ycor() + 20 * taille)
+    car.setx(car.xcor() - 63 * taille)
+    car.setx(car.xcor() + 38 * taille)
+    car.sety(car.ycor() + 20 * taille)
+    car.setx(car.xcor() - 30 * taille)
+    car.goto(car_starting_x + 20, car_starting_y + 34)
+    car.setx(car.xcor() - 20)
+    car.sety(car.ycor() - 34)
     car.end_fill()
+    #Roues
     car.fillcolor('black')
     car.penup()
     car.begin_fill()
-    car.forward(10*taille)
-    for i in range(2):
-        car.sety(car.ycor() - 20*taille)
-        car.circle(10*taille)
-        car.sety(car.ycor() + 20*taille)
-        if i == 0:
-            car.forward(55*taille)
-    car.forward(-1*(10*taille))
-    car.forward(-1*(55*taille))
-    car.end_fill()
-
-
-
-def voiture_infini():
-    car.sety(sol_y)
-    car.forward(sol_size / 4)
-    car.setheading(-90)
-    car.forward(sol_size / 5)
+    car.setx(car.xcor() + 12 * taille)
     car.setheading(0)
-    while True:
-        car.clear()
-        voiture(car, 1.7)
-        screen.update()
-        car.forward(0.5)
-        if car.xcor() >= window_width()/2+150:
-            car.setx((window_width() / 2)*-1-150)
-        
+    for i in range(2):
+        car.sety(car.ycor() - 10 * taille)
+        car.circle(9 * taille)
+        car.sety(car.ycor() + 10 * taille)
+        if i == 0:
+            car.setx(car.xcor() + 52 * taille)
+    car.setx(car.xcor() - 52 * taille)
+    car.setx(car.xcor() - 12 * taille)
+    car.end_fill()
+    car.penup()
+    car.setx(car.xcor() + 37)
+    car.sety(car.ycor() + 37)
+    car.begin_fill()
+    car.pendown()
+    car.fillcolor((153, 255, 255))
+    car.setheading(0)
+    for i in range(2):
+        car.right(90)
+        car.forward(-27)
+        car.right(90)
+        car.forward(-43)
+    car.end_fill()
+    car.setx(car.xcor() + floor(43 / 2))
+    car.sety(car.ycor() + floor(27/2)*2)
+    car.sety(car.ycor() - floor(27/2))
+    car.setx(car.xcor() + floor(43 / 2))
+    car.setx(car.xcor() - floor(43 / 2)*2)
+    car.sety(car.ycor() - floor(27/2))
+    car.penup()
+    car.setx(car.xcor() - 37)
+    car.sety(car.ycor() - 37)
+    car.setx(car_starting_x + 75 * taille)
+    car.sety(car_starting_y + 20 * taille)
+    car.sety(car.ycor() - 2)
+    car.setx(car.xcor() - 2)
+    car.pendown()
+    car.begin_fill()
+    car.fillcolor('yellow')
+    car.setx(car.xcor() - 25)
+    car.sety(car.ycor() - 10)
+    car.setx(car.xcor() + 25)
+    car.sety(car.ycor() + 10)
+    car.end_fill()
+    car.penup()
+    car.sety(car.ycor() + 2)
+    car.setx(car.xcor() + 2)
+    car.penup()
+    car.setx(car_starting_x)
+    car.sety(car_starting_y)
+
+
+def voiture_infini(car, car_color, car_speed):
+    screen.update()
+    car.clear()
+    voiture(1.7, car_color, car)
+    car.setheading(0)
+    car.setx(car.xcor() + car_speed)
+    if car.xcor() >= window_width() / 2 + 150:
+        car.setx((window_width() / 2) * -1 - 150)
 
 
 def ville():
@@ -319,9 +353,20 @@ def ville():
     sol(sol_y)
     herbe()
     ciel()
-    sety(sol_y-30)
+    sety(sol_y - 30)
     immeuble(int(nombre_immeubles))
-    voiture_infini()
+    for loop in range(1, 6):
+        exec('car_color' + str(loop) +' = couleur_aleatoire_voiture()')
+        exec('car_speed' + str(loop) + ' = randint(1, 10)')
+        exec('car' + str(loop) + '.sety(sol_y)')
+        exec('car' + str(loop) + '.setx(randint(int(-1*window_width()/2), int(window_width()/2)))')
+        if randint(1, 2) == 1:
+            exec('car' + str(loop) + '.sety(car' + str(loop) + '.ycor() - sol_size / round(uniform(1.6, 2.1), 1))')
+        else:
+            exec('car' + str(loop) + '.sety(car' + str(loop) + '.ycor() - sol_size / round(uniform(2.9, 4.2), 1))')
+    while True:
+        for loop in range(1, 6):
+            exec('voiture_infini(car' + str(loop) + ', car_color' + str(loop) + ', car_speed' + str(loop) + ')')
 
 
 ville()
