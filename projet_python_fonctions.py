@@ -2,6 +2,7 @@ from turtle import *
 from random import *
 from tkinter import *
 from math import *
+from time import sleep
 
 nombre_immeubles = 7
 immeuble_x = 0
@@ -19,18 +20,22 @@ root = Tk()
 screen = Screen()
 screen.setup(width=root.winfo_screenwidth(), height=root.winfo_screenheight())
 screen.tracer(False)
+screen.delay(0)
 root.destroy()
 
-
-for loop in range(1, 6):
-    exec("car" + str(loop) + " = Turtle()")
-for loop in range(0, 6):
+car_list = []
+car_color_list = []
+car_number = 10
+for loop in range(0, car_number+1):
     if loop == 0:
         hideturtle()
         speed(0)
     else:
-        exec("car" + str(loop) + ".hideturtle()")
-        exec("car" + str(loop) + ".speed(0)")
+        car = Turtle()
+        car.hideturtle()
+        car.speed(0)
+        car_color_list.append((randint(0, 255), randint(0, 255), randint(0, 255)))
+        car_list.append(car)
 
 
 def couleur_aleatoire():
@@ -41,10 +46,6 @@ def couleur_aleatoire():
     r = randint(0, 255)
     g = randint(0, 255)
     b = randint(0, 255)
-
-
-def couleur_aleatoire_voiture() -> tuple:
-    return randint(0, 255), randint(0, 255), randint(0, 255)
 
 
 def sol(y):
@@ -162,22 +163,7 @@ def porte(im_width):
     color((0, 0, 0))
     pendown()
     begin_fill()
-    r_door = r
-    g_door = g
-    b_door = b
-    if r * (5 / 4) <= 255:
-        r_door = int(r * (5 / 4))
-    else:
-        r_door = int(r * (3 / 4))
-    if g * (5 / 4) <= 255:
-        g_door = int(g * (5 / 4))
-    else:
-        g_door = int(g * (3 / 4))
-    if b * (5 / 4) <= 255:
-        b_door = int(b * (5 / 4))
-    else:
-        b_door = int(b * (3 / 4))
-    fillcolor((r_door, g_door, b_door))
+    fillcolor((randint(0, 255), randint(0, 255), randint(0, 255)))
     setx(xcor() + int(im_width / 3))
     sety(ycor() + int(taille_etage / 1.4))
     setx(xcor() - int(im_width / 3))
@@ -338,15 +324,14 @@ def voiture(taille, car_color: tuple, car):
     car.sety(car_starting_y)
 
 
-def voiture_infini(car, car_color, car_speed):
-    screen.update()
+def voiture_infini(car, car_color):
     car.clear()
     voiture(1.7, car_color, car)
     car.setheading(0)
-    car.setx(car.xcor() + car_speed)
-    if car.xcor() >= window_width() / 2 + 150:
-        car.setx((window_width() / 2) * -1 - 150)
-
+    car.forward(3)
+    if car.xcor() >= window_width() / 2:
+        car.setx((window_width() / 2) * -1)
+    screen.update()
 
 def ville():
     global sol_y
@@ -355,19 +340,17 @@ def ville():
     ciel()
     sety(sol_y - 30)
     immeuble(int(nombre_immeubles))
-    for loop in range(1, 6):
-        exec('car_color' + str(loop) +' = couleur_aleatoire_voiture()')
-        exec('car_speed' + str(loop) + ' = randint(1, 10)')
-        exec('car' + str(loop) + '.sety(sol_y)')
-        exec('car' + str(loop) + '.setx(randint(int(-1*window_width()/2), int(window_width()/2)))')
-        if randint(1, 2) == 1:
-            exec('car' + str(loop) + '.sety(car' + str(loop) + '.ycor() - sol_size / round(uniform(1.6, 2.1), 1))')
+    print(car_list)
+    for loop in range(car_number):
+        car_list[loop].sety(sol_y)
+        car_list[loop].setx(int(-1*window_width()/2)+window_width()/car_number*loop)
+        if loop % 2 == 0:
+            car_list[loop].sety(car_list[loop].ycor() - sol_size / round(uniform(1.6, 2.1), 1))
         else:
-            exec('car' + str(loop) + '.sety(car' + str(loop) + '.ycor() - sol_size / round(uniform(2.9, 4.2), 1))')
+            car_list[loop].sety(car_list[loop].ycor() - sol_size / round(uniform(2.9, 4.2), 1))
     while True:
-        for loop in range(1, 6):
-            exec('voiture_infini(car' + str(loop) + ', car_color' + str(loop) + ', car_speed' + str(loop) + ')')
-
+        for loop in range(car_number):
+            voiture_infini(car_list[loop], car_color_list[loop])
 
 ville()
 done()
