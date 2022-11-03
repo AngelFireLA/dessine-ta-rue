@@ -6,9 +6,10 @@ from math import *
 #Variables utilisées souvent dans le programme et qui sont en haut pour être faciles à modifiées pour des test
 nombre_immeubles = 7
 sol_y = int(window_height() / 4 * -1)
-
-taille_etage = int((window_height() * 3 / 4 + 230) / 8)
+taille_etage = int((window_height() * 3 / 4) / 6)
 sol_size = window_height() / 2 + sol_y
+taille_voiture = 1.4343*(window_width()/window_height())
+print(window_width(), window_height())
 
 #Code qui permet de dessiner instantanément le programme, enlevant les délais
 screen = Screen()
@@ -401,7 +402,7 @@ def voiture(taille, car_color: tuple, car):
 #Fonction pour faire bouger la voiture et faire que la voiture ne disparaisse pas de l'écran en la remettant tout à gauche
 def voiture_infini(car, car_color):
     car.clear()
-    voiture(1.7, car_color, car)
+    voiture(taille_voiture, car_color, car)
     car.setheading(0)
     car.forward(3)
     if car.xcor() >= window_width() / 2:
