@@ -1,10 +1,12 @@
 to do list:
-- ajouter les commentaires
-- taille de la fonction en fonction de la taille de l'écran
+
+~~- ajouter les commentaires~~
 - arbres
 - nuage ?
--avion ?
-- plusieurs voitures de différentes couleurs
+- avion ?
+
+~~- plusieurs voitures de différentes couleurs~~
 - autre type de toit ?
-- remplacer forwarda avec position relative
+
+~~- remplacer forwarda avec position relative~~
 - taille de la voiture en fonction de taille d'écran (mon écran comme référence)
