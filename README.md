@@ -2,7 +2,7 @@ to do list:
 
 ~~- ajouter les commentaires~~
 
-~~ - arbres ~~
+~~arbres~~
 - nuage ?
 - avion ?
 
