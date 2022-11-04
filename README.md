@@ -1,7 +1,8 @@
 to do list:
 
 ~~- ajouter les commentaires~~
-- arbres
+
+~~ - arbres ~~
 - nuage ?
 - avion ?
 
@@ -9,4 +10,4 @@ to do list:
 - autre type de toit ?
 
 ~~- remplacer forwarda avec position relative~~
-- taille de la voiture en fonction de taille d'écran (mon écran comme référence)
+~~- taille de la voiture en fonction de taille d'écran (mon écran comme référence)~~
