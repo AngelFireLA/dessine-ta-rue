@@ -1,3 +1,5 @@
+#De préférence à lancer avec le minimum d'autres application ouvertes en même temps pour améliorer les performance des turtles
+
 from turtle import *
 from random import randint, uniform
 from tkinter import Tk
@@ -9,7 +11,7 @@ sol_y = int(window_height() / 4 * -1)
 taille_etage = int((window_height() * 3 / 4) / 6)
 sol_size = window_height() / 2 + sol_y
 taille_voiture = 1.4343*(window_width()/window_height())
-print(window_width(), window_height())
+nombre_buissons = 9
 
 #Code qui permet de dessiner instantanément le programme, enlevant les délais
 screen = Screen()
@@ -21,10 +23,16 @@ root = Tk()
 screen.setup(width=root.winfo_screenwidth(), height=root.winfo_screenheight())
 root.destroy()
 
+# Distance entre les immeubles pour avoir des immeubles centrées et largeur des immeubles
+im_distance_in_screen = window_width() / (nombre_immeubles * 3 + nombre_immeubles + 1)
+im_width = int(im_distance_in_screen * 3)
+
+taille_arbre = window_width()/1920
+
 #Setup une liste de Turtles et une couleur associées, qui seront utilisées comme "voitures" dans la suite du code"
 car_list = []
 car_color_list = []
-car_number = 10
+car_number = 8
 for loop in range(0, car_number+1):
     if loop == 0:
         hideturtle()
@@ -49,9 +57,7 @@ def couleur_aleatoire():
 
 
 #Code Principal lors de la création des immeubles
-def immeuble(immeubles):
-    #Distance entre les immeubles pour avoir des immeubles centrées
-    im_distance_in_screen = window_width() / (immeubles * 3 + immeubles + 1)
+def immeuble():
     penup()
 
     #Remettre la turtle à la gauche de l'écran
@@ -60,8 +66,7 @@ def immeuble(immeubles):
     setx(xcor() + im_distance_in_screen)
 
     #Boucle qui génère les immeubles
-    for immeuble in range(0, immeubles):
-        im_width = int(im_distance_in_screen * 3)
+    for immeuble in range(0, nombre_immeubles):
         im_etages = randint(3, 5)
         penup()
         couleur_aleatoire()
@@ -102,8 +107,8 @@ def immeuble(immeubles):
 
         #La turtle se met en place pour dessiner le prochain immeuble
         setx(starting_x + im_width)
-        setx(xcor() + im_distance_in_screen)
         sety(sol_y*1.1485)
+        setx(xcor() + im_distance_in_screen)
 
 
 #Fonction qui génère les fenêtres
@@ -409,6 +414,89 @@ def voiture_infini(car, car_color):
         car.setx((window_width() / 2) * -1)
     screen.update()
 
+#Fonction qui détermine la positiondes arbres et les génère
+def setup_arbres():
+
+    #Met la turtle à la position initiale où généré les arbres
+    setx(int(window_width() / 2 * -1))
+    sety(sol_y * 1.1485)
+
+    #Première génération d'un arbre manuel car il y a besoin d'une ligne en moins pour le premier arbre sinon c'est décalé
+    setx(xcor() + im_distance_in_screen / 4)
+    arbres(im_distance_in_screen / 2)
+    setx(xcor() - im_distance_in_screen / 4)
+    setx(xcor() + im_distance_in_screen * (3 / 4))
+
+    #Boucle pour répété automatiquement le placement d'un arbre
+    for loop in range(0, nombre_immeubles + 1):
+        setx(xcor() + im_width)
+        arbres(im_distance_in_screen / 2)
+        setx(xcor() + im_distance_in_screen / 2)
+
+
+#Fonction qui génère un arbre à la position de la turtle
+def arbres(largeur_tronc):
+    #Stock la position au début de la génération de l'abre pour se remettre en position plus tard
+    starting_pos = pos()
+
+    #Code qui dessine le tronc
+    pendown()
+    color('black')
+    fillcolor((153, 76, 0))
+    begin_fill()
+    setx(xcor() + largeur_tronc)
+    sety(ycor() + largeur_tronc*3*taille_arbre)
+    setx(xcor() - largeur_tronc)
+    sety(ycor() - largeur_tronc*3*taille_arbre)
+    end_fill()
+    penup()
+    sety(ycor() + largeur_tronc*3*taille_arbre)
+
+    # Feuilles
+    color("green")
+    setheading(0)
+    setx(xcor() - largeur_tronc/2*taille_arbre*1.75)
+    begin_fill()
+    for loop in range(3):
+        for loop2 in range(3):
+            dot(int(largeur_tronc*0.75*taille_arbre*1.75))
+            forward(largeur_tronc/2*taille_arbre*1.75)
+        left(120)
+    end_fill()
+    sety(ycor() - largeur_tronc*3*taille_arbre)
+    setx(xcor() + largeur_tronc/2*taille_arbre*1.75)
+
+    #Prépare la position pour le prochain arbre
+    setpos(starting_pos)
+    setx(xcor()+largeur_tronc)
+
+
+def setup_buissons():
+    # Met la turtle à la position initiale où généré les arbres (le nombre a virgule est pour centré)
+    setx(int(window_width() / 2 * -1)+(0.0390625*window_width()))
+    sety(sol_y-230)    # Boucle pour répété automatiquement le placement d'un arbre
+    for loop in range(1, nombre_buissons+1):
+        buissons()
+        setx(int(-1 * window_width() / 2) + window_width() / nombre_buissons * loop+(0.0390625*window_width()))
+
+
+# Fonction qui génère un arbre à la position de la turtle
+def buissons():
+    # Stock la position au début de la génération du buisson pour se remettre en position plus tard
+    starting_pos = pos()
+
+    #Dessine le buisson
+    color("green")
+    penup()
+    setheading(0)
+    for loop in range(3):
+        dot(int(window_width()/32))
+        forward(window_width()/38.4)
+        left(120)
+
+    # Prépare la position pour le prochain arbre
+    setpos(starting_pos)
+
 
 #Fonction principale qui détermine l'ordre des fonctions dans lequel le programme se déroule
 def ville():
@@ -418,7 +506,9 @@ def ville():
     ciel()
     #Valeur trouver avec une division car avant c'était une valeur fixe et non une valeur selon l'écran
     sety(sol_y*1.1485)
-    immeuble(int(nombre_immeubles))
+    immeuble()
+    setup_arbres()
+    setup_buissons()
 
     #Boucle pour placer les voitures à leur position de départ
     for loop in range(car_number):
